@@ -1,17 +1,24 @@
 # system_info
 
-A small Python CLI tool that prints basic system information.
+A small Python CLI tool that prints system information.
 
-## What it shows
+## Features
 
-- Hostname
-- Operating system
-- Kernel version
-- Machine architecture
-- Python version
-- Current working directory
+- Show full system info
+- Output as JSON
+- Query specific fields
 
-## Run
+## Fields
+
+- hostname
+- os
+- machine
+- python
+- cwd
+
+## Usage
+
+Run full output:
 
 ```bash
 python3 main.py
