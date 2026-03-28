@@ -20,3 +20,8 @@ This repository is my central programming workspace.
 ## Current Focus
 
 Setting up the repository structure and workflow from my server.
+
+## Projects
+
+### Python
+- `system_info` - A small CLI tool that prints system information and can output JSON or individual fields.
