@@ -35,3 +35,8 @@ python3 main.py --memory
 python3 main.py --podman
 #Shows active containers
 ```
+
+Show output as JSON:
+```bash
+server-status --json
+

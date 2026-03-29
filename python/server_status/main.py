@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import os
+import argparse
 import subprocess
 
 def get_uptime():
@@ -15,6 +17,43 @@ def get_podman():
     return output if output.strip() else "No running containers"
 
 def main():
+    parser = argparse.ArgumentParser(description="Server status CLI tool")
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
+    parser.add_argument("--uptime", action="store_true", help="Show uptime only")
+    parser.add_argument("--disk", action="store_true", help="Show disk usage only")
+    parser.add_argument("--memory", action="store_true", help="Show memory usage only")
+    parser.add_argument("--podman", action="store_true", help="Show running containers only")
+
+    args = parser.parse_args()
+    
+    data = {
+            "uptime": get_uptime(),
+            "disk": get_disk(),
+            "memory": get_memory(),
+            "podman": get_podman(),
+            }
+
+    if args.json:
+        import json
+        print(json.dumps(data, indent=2))
+        return
+
+    if args.uptime:
+        print(get_uptime())
+        return
+
+    if args.disk:
+        print(get_disk())
+        return
+
+    if args.memory:
+        print(get_memory())
+        return
+
+    if args.podman:
+        print(get_podman())
+        return
+
     print("Server Status")
     print("----------------")
 
