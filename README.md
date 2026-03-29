@@ -25,3 +25,4 @@ Setting up the repository structure and workflow from my server.
 
 ### Python
 - `system_info` - A small CLI tool that prints system information and can output JSON or individual fields.
+- `server_status` - A CLI tool for checking uptime, disk usage, memory usage, and container status and can output JSON.
