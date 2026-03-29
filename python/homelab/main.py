@@ -2,13 +2,18 @@
 import argparse
 import subprocess
 import sys
+from lib.system import print_info
+from lib.status import print_status
 
 def main():
     parser = argparse.ArgumentParser(description="Homelab toolkit")
     subparsers = parser.add_subparsers(dest="command")
 
-    subparsers.add_parser("info", help="Show system info")
-    subparsers.add_parser("status", help="Show server status")
+    info_parser = subparsers.add_parser("info", help="Show system info")
+    info_parser.add_argument("--json", action="store_true")
+
+    status_parser = subparsers.add_parser("status", help="Show server status")
+    status_parser.add_argument("--json", action="store_true")
 
     logs_parser = subparsers.add_parser("logs", help="Show service logs")
     logs_parser.add_argument("service")
@@ -16,12 +21,14 @@ def main():
     logs_parser.add_argument("--follow", action="store_true")
     logs_parser.add_argument("--filter", type=str)
 
-    args, extra = parser.parse_known_args()
+    args = parser.parse_args()
 
     if args.command == "info":
-        cmd = ["sysinfo"] + extra
+        print_info(as_json=args.json)  # Use the imported function
+        return
     elif args.command == "status":
-        cmd = ["server-status"] + extra
+        print_status(as_json=args.json)
+        return
     elif args.command == "logs":
         cmd = ["log-tail", args.service, "--lines", str(args.lines)]
         if args.follow:
