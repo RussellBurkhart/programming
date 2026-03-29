@@ -35,5 +35,3 @@ python3 main.py --memory
 python3 main.py --podman
 #Shows active containers
 ```
-
-eof
