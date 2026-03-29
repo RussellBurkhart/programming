@@ -15,6 +15,7 @@ def main():
     parser.add_argument("--list", action="store_true", help="List available services")
     parser.add_argument("--lines", type=int, default=50, help="Number of lines to show")
     parser.add_argument("--follow", action="store_true", help="Follow the log output")
+    parser.add_argument("--filter", type=str, help="Only show lines containing this text")
 
     args = parser.parse_args()
 
@@ -33,7 +34,15 @@ def main():
         cmd.append("-f")
 
     try:
-        subprocess.run(cmd, check=False)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+
+        output = result.stdout
+
+        if args.filter:
+            lines = output.splitlines()
+            output = "\n".join(line for line in lines if args.filter.lower() in line.lower())
+
+        print(output)
     except KeyboardInterrupt:
         sys.exit(0)
 
