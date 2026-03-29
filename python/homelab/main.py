@@ -4,6 +4,7 @@ import subprocess
 import sys
 from lib.system import print_info
 from lib.status import print_status
+from lib.logs import run_logs, list_services
 
 def main():
     parser = argparse.ArgumentParser(description="Homelab toolkit")
@@ -16,10 +17,11 @@ def main():
     status_parser.add_argument("--json", action="store_true")
 
     logs_parser = subparsers.add_parser("logs", help="Show service logs")
-    logs_parser.add_argument("service")
+    logs_parser.add_argument("service", nargs="?")
     logs_parser.add_argument("--lines", type=int, default=50)
     logs_parser.add_argument("--follow", action="store_true")
     logs_parser.add_argument("--filter", type=str)
+    logs_parser.add_argument("--list", action="store_true")
 
     args = parser.parse_args()
 
@@ -30,11 +32,21 @@ def main():
         print_status(as_json=args.json)
         return
     elif args.command == "logs":
-        cmd = ["log-tail", args.service, "--lines", str(args.lines)]
-        if args.follow:
-            cmd.append("--follow")
-        if args.filter:
-            cmd.extend(["--filter", args.filter])
+        if args.list:
+            list_services()
+            return
+
+        if not args.service:
+            print("Error: service required unless using --list")
+            sys.exit(1)
+
+        run_logs(
+            service=args.service,
+            lines=args.lines,
+            follow=args.follow,
+            filter_text=args.filter,
+        )
+        return
     else:
         parser.print_help()
         sys.exit(1)
